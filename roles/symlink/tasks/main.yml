@@ -1,0 +1,6 @@
+---
+- name: Create symbolic link for {{ filename }}
+  file:
+    src: "~/.dotfiles/{{ filename }}"
+    dest: "~/.{{ filename }}"
+    state: link

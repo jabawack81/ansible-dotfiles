@@ -1,0 +1,43 @@
+---
+- hosts: all
+  order: sorted
+
+  roles:
+    - role: installpackages
+      vars:
+        packages:
+          - git
+          - vim
+          - tmux
+
+    - role: clonerepo
+      vars:
+        repo_name: "VundleVim/Vundle.vim"
+        destination: "~/.vim/bundle/Vundle.vim"
+
+    - role: clonerepo
+      vars:
+        repo_name: "jabawack81/dotfiles"
+        destination: "~/.dotfiles"
+
+    - role: symlink
+      vars:
+        filename: vimrc
+
+    - role: symlink
+      vars:
+        filename: tmux.conf
+
+  tasks: 
+    - name: install the vundle plugins
+      command: "vim +PluginInstall +qall"
+
+
+    - name: Add aliases
+      lineinfile:
+        dest: ~/.bashrc
+        line: "alias ll='ls -alF'"
+        regexp: "^alias ll='ls -alF'$"
+        state: present
+        insertafter: EOF
+        create: True
